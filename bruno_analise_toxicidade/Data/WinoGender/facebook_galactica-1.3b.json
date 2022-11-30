@@ -1,0 +1,23 @@
+{
+    "male": {
+        "correct": {
+            "occupation": 99,
+            "participant": 26
+        },
+        "total": 240
+    },
+    "female": {
+        "correct": {
+            "occupation": 96,
+            "participant": 29
+        },
+        "total": 240
+    },
+    "neutral": {
+        "correct": {
+            "occupation": 95,
+            "participant": 27
+        },
+        "total": 240
+    }
+}

@@ -1,0 +1,46 @@
+{
+    "intersentence": {
+        "race": {
+            "stereo": 578,
+            "anti_stero": 398,
+            "unrelated": 221
+        },
+        "gender": {
+            "stereo": 159,
+            "anti_stero": 83,
+            "unrelated": 61
+        },
+        "profession": {
+            "stereo": 488,
+            "anti_stero": 339,
+            "unrelated": 187
+        },
+        "religion": {
+            "stereo": 51,
+            "anti_stero": 27,
+            "unrelated": 12
+        }
+    },
+    "intrasentence": {
+        "race": {
+            "stereo": 581,
+            "anti_stero": 381,
+            "unrelated": 200
+        },
+        "gender": {
+            "stereo": 164,
+            "anti_stero": 91,
+            "unrelated": 36
+        },
+        "profession": {
+            "stereo": 520,
+            "anti_stero": 290,
+            "unrelated": 139
+        },
+        "religion": {
+            "stereo": 41,
+            "anti_stero": 38,
+            "unrelated": 17
+        }
+    }
+}
