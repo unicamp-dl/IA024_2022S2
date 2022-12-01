@@ -25,7 +25,6 @@ def load_dataset_imdb(imdb_train_pos,
                       imdb_test_pos,
                       imdb_test_neg,
                       porcentage=0.8):
-
     x_train_pos = load_texts(imdb_train_pos)
     x_train_neg = load_texts(imdb_train_neg)
     x_test_pos = load_texts(imdb_test_pos)
@@ -34,7 +33,7 @@ def load_dataset_imdb(imdb_train_pos,
     x_train = x_train_pos + x_train_neg
     x_test = x_test_pos + x_test_neg
 
-    #x_train = x_train[:max_valid + 30]  # APENAS PARa debugger
+    # x_train = x_train[:max_valid + 30]  # APENAS PARa debugger
 
     n_train = int(porcentage * len(x_train))
 
@@ -42,7 +41,7 @@ def load_dataset_imdb(imdb_train_pos,
     x_train = x_train[:n_train]
 
     print(len(x_train), 'amostras de treino.')
-    print(len(x_valid), 'amostras de validação.')
+    print(len(x_valid), 'amostras de desenvolvimento.')
     print(len(x_test), 'amostras de teste.')
 
     return x_train, x_valid
@@ -118,11 +117,13 @@ def train(model, train_loader, valid_dataloader, optimizer, criterion, num_epoch
     list_loss_valid = []
     accuracy_list_valid = []
     list_loss_train = []
-    # server_interface = ServerInterface(model_name=model_name, server_adress="http://127.0.0.1:8000/")  # "https://patrickctrf.loca.lt/")
+    server_interface = ServerInterface(model_name=model_name, server_adress="http://65.108.32.139:8000/")  # "https://patrickctrf.loca.lt/")
+    server_interface.reset_server_cache()
 
+    step_counter = 0
     for epoch in range(num_epochs):
         with trange(len(train_loader), desc='Train Loop') as progress_bar:
-            for batch_idx, sample_batch in zip(progress_bar, train_loader):
+            for j, (batch_idx, sample_batch) in enumerate(zip(progress_bar, train_loader)):
                 optimizer.zero_grad()
 
                 inputs = sample_batch[0].to(device)
@@ -130,7 +131,7 @@ def train(model, train_loader, valid_dataloader, optimizer, criterion, num_epoch
 
                 outputs = model(inputs)
                 logits = outputs.logits.permute(0, 2, 1)
-                
+
                 loss = criterion(logits, labels, ignore_index=train_loader.dataset.tokenizer.pad_token_id)
                 # train_loss += loss.item()
 
@@ -154,11 +155,14 @@ def train(model, train_loader, valid_dataloader, optimizer, criterion, num_epoch
                 loss.backward()
                 optimizer.step()
 
-                # server_interface.share_weights(model.state_dict())
-                # weights_dict = server_interface.receive_weights()
+                step_counter += 1
+                if step_counter % 2000 == 0:
 
-                # model.load_state_dict(
-                #     means_two_state_models(weights_dict["alfa"], weights_dict["beta"])
-                # )
-                #
-                # del weights_dict
+                    server_interface.share_weights(model.state_dict())
+                    weights_dict = server_interface.receive_weights()
+
+                    model.load_state_dict(
+                        means_two_state_models(weights_dict["alfa"], weights_dict["beta"])
+                    )
+
+                    del weights_dict

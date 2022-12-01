@@ -1,6 +1,5 @@
 import pickle
 import time
-from multiprocessing import Queue
 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -67,3 +66,18 @@ def sinc_weight(request):
 
     # O tipo de conteudo apenas formaliza que esta sendo transmitido dados binarios arbitrarios
     return HttpResponse(pickle.dumps(share_weight_dict.pop(request.headers["model-name"], None)), headers={"content-type": "application/octet-stream"})
+
+
+def reset_cache(request):
+    global weight_dict, max_weight_dict_size, share_weight_dict
+    global loss_dict, max_loss_dict_size, share_loss_dict
+
+    weight_dict = {}
+    max_weight_dict_size = 2
+    share_weight_dict = {}
+
+    loss_dict = {}
+    max_loss_dict_size = 2
+    share_loss_dict = {}
+
+    return HttpResponse()

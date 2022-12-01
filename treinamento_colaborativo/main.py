@@ -39,6 +39,7 @@ train_dataset = ImdbDataset(x_train, tokenizer, configs["context_size"], name)
 
 valid_dataset = ImdbDataset(x_valid, tokenizer, configs["context_size"], name)
 
+raise('')
 train_dataloader = torch.utils.data.DataLoader(train_dataset,
                                                batch_size=configs['batch_size_train'],
                                                shuffle=True)  # change

@@ -102,3 +102,11 @@ class ServerInterface(object):
             response_dict[key] = pickle.loads(response_dict[key])
 
         return response_dict
+
+    def reset_server_cache(self, ):
+        if self.model_name == "alfa":
+            self.clienteHttp.get(
+                url=urllib.parse.urljoin(self.server_adress, "neuralserver/reset_cache"),
+                headers={"model-name": self.model_name},
+                timeout=None,
+            )
