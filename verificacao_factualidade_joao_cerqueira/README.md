@@ -1,6 +1,7 @@
 # Verificação de factualidade
 
 **Autor:** João Carlos Cerqueira (jc.cerqueira13@gmail.com)
+
 **Data:** 01 de dezembro de 2022
 
 
